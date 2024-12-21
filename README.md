@@ -2,6 +2,12 @@
 
 Effortlessly track and access your clipboard history across applications using this innovative Chrome extension powered by **Native Messaging**. Designed for productivity enthusiasts, this project bridges the gap between browser-based extensions and system-wide clipboard access.
 
+## **Walkthrough**
+
+https://github.com/user-attachments/assets/e4fb06b0-23b7-4621-b7b0-efe505468e23
+
+
+
 ---
 
 ## **Features**
