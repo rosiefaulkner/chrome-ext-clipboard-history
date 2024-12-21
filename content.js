@@ -1,3 +1,6 @@
+/**
+ * Clipboard listener for copying content within Chrome
+ */
 document.addEventListener("copy", () => {
   navigator.clipboard
     .readText()
