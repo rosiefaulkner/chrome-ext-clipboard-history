@@ -1,0 +1,10 @@
+{
+    "name": "com.example.clipboard",
+    "description": "Clipboard handler for Chrome extension",
+    "path": "native_clipboard.js",
+    "type": "stdio",
+    "allowed_origins": [
+      "chrome-extension://<GOOGLE-CHROME-ID>/"
+    ]
+}
+  
