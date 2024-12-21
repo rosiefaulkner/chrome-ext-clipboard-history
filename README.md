@@ -58,16 +58,16 @@ npm install
 2. Use `native_clipboard.js` as the path.
 3. Place the manifest file in the appropriate directory for your operating system:
 
-- Windows: %LOCALAPPDATA%\Google\Chrome\User Data\NativeMessagingHosts
-- macOS/Linux: ~/.config/google-chrome/NativeMessagingHosts
+- Windows: `%LOCALAPPDATA%\Google\Chrome\User Data\NativeMessagingHosts`
+- macOS/Linux: `~/.config/google-chrome/NativeMessagingHosts`
 
 4. Modify the manifest to include your Chrome extension ID.
 
 ### **4. Load the Chrome Extension**
 
-Navigate to chrome://extensions in Chrome.
+Navigate to `chrome://extensions` in Chrome.
 Enable Developer Mode.
-Click Load unpacked and select the extension/ folder.
+Click Load unpacked and select the `extension/` folder.
 
 ---
 
