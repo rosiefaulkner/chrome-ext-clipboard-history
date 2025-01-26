@@ -7,32 +7,22 @@
  * @returns {Promise<Object>} A promise that resolves with the response from the native app.
  * @throws {string} If an error occurs during the communication, the promise is rejected with the error message.
  */
-// function sendMessageToNative(message) {
-//   return new Promise((resolve, reject) => {
-//       chrome.runtime.sendNativeMessage(
-//           "com.example.clipboard",
-//           message,
-//           (response) => {
-//               if (chrome.runtime.lastError) {
-//                   reject(chrome.runtime.lastError.message);
-//               } else {
-//                   resolve(response);
-//               }
-//           }
-//       );
-//   });
-// }
-
-function sendMessageToNative(message) {
-  chrome.runtime.sendNativeMessage('com.example.clipboard', message, response => {
-    if (chrome.runtime.lastError) {
-    } else {
-      console.log('Received clipboard content:', response.clipboard);
-      // Store the clipboard content or handle it as per your requirements
-      chrome.storage.local.set({clipboardData: response.clipboard});
-    }
+function sendNativeMessage(message) {
+  return new Promise((resolve, reject) => {
+      chrome.runtime.sendNativeMessage(
+          "com.example.clipboard",
+          message,
+          (response) => {
+              if (chrome.runtime.lastError) {
+                  reject(chrome.runtime.lastError.message);
+              } else {
+                  resolve(response);
+              }
+          }
+      );
   });
 }
+
 /**
 * Listens for the user to click on the extension's action (icon) and triggers the fetching of clipboard content.
 * When the action is triggered, it calls `sendNativeMessage` to retrieve the clipboard data from the native application,
@@ -81,61 +71,4 @@ if (request.type === "addToClipboard") {
   });
   return true; // Indicates the response will be sent asynchronously
 }
-});
-
-let lastClip = '';
-
-async function checkClipboardContentOnChange() {
-    try {
-        const response = await sendNativeMessage({ action: "get_clipboard" });
-        if (response && lastClip !== response.clipboard) {
-            lastClip = response.clipboard;
-            chrome.storage.local.set({ clipboardHistory: lastClip });
-            console.log("Clipboard content updated:", lastClip);
-        }
-    } catch (error) {
-        console.error("Failed to fetch or process clipboard content:", error);
-    }
-}
-
-chrome.runtime.onInstalled.addListener(() => {
-    chrome.storage.local.set({ clipboardHistory: [] });
-});
-
-// Listen for a message to add to clipboard history
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.type === "addToClipboard") {
-        chrome.storage.local.get("clipboardHistory", (result) => {
-            const history = result.clipboardHistory || [];
-            if (!history.includes(request.text)) {
-                history.unshift(request.text); // Add to the front of the array
-                chrome.storage.local.set({clipboardHistory: history.slice(0, 100)}); // Keep only the latest 100 items
-            }
-        });
-    }
-});
-
-chrome.runtime.onInstalled.addListener(() => {
-  sendMessageToNative({ action: "get_clipboard" });
-});
-
-chrome.runtime.onInstalled.addListener(() => {
-  sendMessageToNative({ action: "get_clipboard" });
-});
-
-// Check for clipboard changes when the computer is idle or active agai
-const debounce = (func, delay) => {
-  let timeoutId;
-  return (...args) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => func(...args), delay);
-  };
-};
-
-const debouncedCheckClipboard = debounce(checkClipboardContentOnChange, 300);
-
-chrome.idle.onStateChanged.addListener(state => {
-  if (state === chrome.idle.IdleState.ACTIVE) {
-      debouncedCheckClipboard();
-  }
 });

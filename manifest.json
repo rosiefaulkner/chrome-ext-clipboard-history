@@ -11,8 +11,7 @@
         "tabs",
         "scripting",
         "offscreen",
-        "nativeMessaging",
-        "idle"
+        "nativeMessaging"
     ],
     "host_permissions": [
         "<all_urls>"
